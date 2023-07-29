@@ -79,11 +79,12 @@ WSGI_APPLICATION = 'party_on_the_weekend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'party_app_djagno', 
+        'URL': 'postgresql://postgres:lyF5Yf4ZQ7NmqKaSL23C@containers-us-west-74.railway.app:5600/railway',
+        'NAME': 'railway', 
         'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': '127.0.0.1', 
-        'PORT': '5432',
+        'PASSWORD': 'lyF5Yf4ZQ7NmqKaSL23C',
+        'HOST': 'containers-us-west-74.railway.app', 
+        'PORT': '5600',
     }
 }
 
