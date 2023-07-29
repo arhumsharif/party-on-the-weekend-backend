@@ -1,37 +1,38 @@
+from serpapi import GoogleSearch
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework import permissions
 from potw_api.models import Place
 from potw_api.serializers import *
 
-class PlaceListApiView(APIView):
-    # add permission to check if user is authenticated
-    permission_classes = [permissions.IsAuthenticated]
+@api_view(['POST'])
+def places(request):
+    data = request.data
+    serializer = PlaceRequestSerializer(data=data)
+    if serializer.is_valid():
+        
+        places = Place.objects.filter(genres__contains =  data['genres'])
+        serialized_data = PlaceSerializer(places, many=True)
+  
+        return Response({"places": serialized_data.data}, status=status.HTTP_200_OK)
+    
+    return Response({"message":"Please provide a valid request data"}, status=400)
 
-    # 1. List all
-    def get(self, request, *args, **kwargs):
-        '''
-        List all the todo items for given requested user
-        '''
 
-        todos = Place.objects.filter()
-        serializer = PlaceSerializer(todos, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+@api_view(['POST'])
+def sync_user(request):
+    data = request.data
+    serializer = UserCreateSerializer(data = data)
+    print('data', request.data)
+    if serializer.is_valid():
 
-    # 2. Create
-    def post(self, request, *args, **kwargs):
-        '''
-        Create the Todo with given todo data
-        '''
-        data = {
-            'task': request.data.get('task'), 
-            'completed': request.data.get('completed'), 
-            'user': request.user.id
-        }
-        serializer = PlaceSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        user = serializer.save()
+        return Response({
+            'message': 'User created successfully',
+            'user': serializer.data
+        }, status=status.HTTP_201_CREATED)
 
+    else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

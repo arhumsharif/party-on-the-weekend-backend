@@ -16,16 +16,16 @@ class User(models.Model):
 class Place(models.Model):
     name = models.CharField(max_length=200, null=False)
     genres = ArrayField(models.CharField(max_length=100))
-    longitude = models.FloatField()
-    latitude = models.FloatField()
-    description = models.TextField()
-    ratings = models.FloatField()
-    open_hours = models.CharField(max_length=100)
-    closing_hours = models.CharField(max_length=100)
-    address = models.CharField(max_length=200)
-    website = models.URLField(max_length=200)
-    socials = models.JSONField(default=dict, blank=True)
-    image = models.CharField(max_length=200)
+    longitude = models.FloatField(null= True, blank = True)
+    latitude = models.FloatField(null= True, blank = True)
+    description = models.TextField(null= True, blank = True)
+    ratings = models.FloatField(null= True, blank = True)
+    open_hours = models.CharField(max_length=100,null= True, blank = True)
+    closing_hours = models.CharField(max_length=100,null= True, blank = True)
+    address = models.CharField(max_length=200,null= True, blank = True)
+    website = models.URLField(max_length=200,null= True, blank = True)
+    socials = models.JSONField(default=dict, blank=True, null = True)
+    image = models.CharField(max_length=200, null= True, blank = True)
 
     class Meta:
         
